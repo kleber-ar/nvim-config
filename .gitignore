@@ -1,0 +1,13 @@
+tt.*
+.tests
+doc/tags
+debug
+.repro
+foo.*
+*.log
+data
+# Ignore arquivos temporários do Neovim
+*.swp
+*.swo
+.DS_Store
+.session

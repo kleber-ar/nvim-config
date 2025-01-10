@@ -4,3 +4,11 @@
 
 vim.o.linebreak = true
 vim.o.wrap = true
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = { '*.js', '*.ts', '*.py', '*.lua', '*.html', '*.css' },
+  -- Ajuste os padrões de arquivo conforme necessário
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+})

@@ -1,4 +1,3 @@
--- add tsserver and setup with typescript.nvim instead of lspconfig
 return {
   {
     'neovim/nvim-lspconfig',
@@ -6,30 +5,50 @@ return {
       'jose-elias-alvarez/typescript.nvim',
       init = function()
         require('lazyvim.util').lsp.on_attach(function(_, buffer)
-          -- stylua: ignore
-          vim.keymap.set("n", "<leader>co", "TypescriptOrganizeImports", { buffer = buffer, desc = "Organize Imports" })
+          -- Configurações específicas do TypeScript
+          vim.keymap.set('n', '<leader>co', 'TypescriptOrganizeImports', { buffer = buffer, desc = 'Organize Imports' })
           vim.keymap.set('n', '<leader>cR', 'TypescriptRenameFile', { desc = 'Rename File', buffer = buffer })
         end)
       end,
     },
-    ---@class PluginLspOpts
     opts = {
       servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
+        -- Pyright com formatação via autopep8
         pyright = {
           formatting = {
-            provider = 'autopep8', -- ou black, conforme sua preferência
+            provider = 'autopep8',
           },
         },
-        -- biome will be automatically installed with mason and loaded with lspconfig
+
+        -- Biome com formatação com aspas simples
         biome = {
           settings = {
             format = {
-              enable = true, -- Habilitar formatação com Biome
+              enable = true,
+              singleQuote = true,
             },
           },
         },
 
+        -- Configuração do TypeScript com Typescript.nvim
+        tsserver = {
+          settings = {
+            typescript = {
+              format = {
+                enable = true,
+                singleQuote = true,
+              },
+            },
+            javascript = {
+              format = {
+                enable = true,
+                singleQuote = true,
+              },
+            },
+          },
+        },
+
+        -- Configuração do LuaLS para Lua
         lua_ls = {
           settings = {
             Lua = {
@@ -42,9 +61,22 @@ return {
             },
           },
         },
+
+        -- ESLint configurado para não formatar (somente diagnóstico)
+        eslint = {
+          settings = {
+            format = false,
+            codeActionOnSave = {
+              enable = false,
+              mode = 'all',
+            },
+            run = 'onType',
+            workingDirectory = {
+              mode = 'auto',
+            },
+          },
+        },
       },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
       setup = {},
     },
   },

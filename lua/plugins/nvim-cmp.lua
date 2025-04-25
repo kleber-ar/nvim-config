@@ -39,6 +39,14 @@ return {
         name = 'emoji', -- Fonte emoji
         insert = true, -- Habilita a inserção de emojis
       })
+
+      -- Aqui entra o mapeamento:
+      local cmp = require('cmp')
+      opts.mapping = cmp.mapping.preset.insert({
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = cmp.mapping.select_next_item(),
+        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+      })
     end,
   },
 }

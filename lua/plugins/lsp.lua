@@ -4,6 +4,8 @@ return {
     dependencies = {
       'jose-elias-alvarez/typescript.nvim',
       init = function()
+        vim.env.PATH = vim.env.PATH .. ':/home/kleber/.nvm/versions/node/v20.17.0/bin'
+
         require('lazyvim.util').lsp.on_attach(function(_, buffer)
           -- Configurações específicas do TypeScript
           vim.keymap.set('n', '<leader>co', 'TypescriptOrganizeImports', { buffer = buffer, desc = 'Organize Imports' })
@@ -74,10 +76,41 @@ return {
             workingDirectory = {
               mode = 'auto',
             },
+            nodePath = '/home/kleber/.nvm/versions/node/v20.17.0/bin',
+          },
+        },
+
+        -- Configuração do CSS Language Server
+        cssls = {
+          cmd = { 'vscode-css-language-server', '--stdio' }, -- Garantir que o comando está correto
+          filetypes = { 'css', 'scss', 'less' },
+          settings = {
+            css = {
+              validate = true,
+              lint = {
+                unknownAtRules = 'ignore',
+              },
+            },
+            scss = {
+              validate = true,
+              lint = {
+                unknownAtRules = 'ignore',
+              },
+            },
+            less = {
+              validate = true,
+              lint = {
+                unknownAtRules = 'ignore',
+              },
+            },
           },
         },
       },
-      setup = {},
+
+      -- Configuração do LSP e integração com nvim-cmp
+      setup = {
+        -- Você pode adicionar configurações adicionais aqui, se necessário
+      },
     },
   },
 }

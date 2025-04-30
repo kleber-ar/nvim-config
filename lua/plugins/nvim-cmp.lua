@@ -44,8 +44,12 @@ return {
       local cmp = require('cmp')
       opts.mapping = cmp.mapping.preset.insert({
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        ['<Tab>'] = cmp.mapping.select_next_item(),
-        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+        --['<Tab>'] = cmp.mapping.select_next_item(),
+        --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+      })
+
+      table.insert(opts.sources, {
+        name = 'nvim_lsp', -- Fonte nvim_lsp (para TypeScript, CSS e outras linguagens)
       })
     end,
   },

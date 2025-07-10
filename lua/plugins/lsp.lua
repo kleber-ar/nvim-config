@@ -1,5 +1,9 @@
 return {
   {
+    'williamboman/mason-lspconfig.nvim',
+    version = '1.29.0',
+  },
+  {
     'neovim/nvim-lspconfig',
     dependencies = {
       'jose-elias-alvarez/typescript.nvim',

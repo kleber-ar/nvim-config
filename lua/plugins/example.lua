@@ -161,7 +161,7 @@ return {
 
   -- add any tools you want to have installed below
   {
-    'williamboman/mason.nvim',
+    'mason-org/mason-lspconfig.nvim',
     opts = {
       ensure_installed = {
         'stylua',

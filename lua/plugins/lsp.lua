@@ -1,8 +1,5 @@
 return {
-  {
-    'williamboman/mason-lspconfig.nvim',
-    version = '1.29.0',
-  },
+  { 'mason-org/mason-lspconfig.nvim' },
   {
     'neovim/nvim-lspconfig',
     dependencies = {

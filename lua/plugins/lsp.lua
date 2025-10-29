@@ -4,14 +4,30 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       'jose-elias-alvarez/typescript.nvim',
-      init = function()
+      -- NOVO BLOCO 'config' SUBSTITUINDO O 'init'
+      config = function()
         vim.env.PATH = vim.env.PATH .. ':/home/kleber/.nvm/versions/node/v20.17.0/bin'
 
-        require('lazyvim.util').lsp.on_attach(function(_, buffer)
-          -- Configurações específicas do TypeScript
-          vim.keymap.set('n', '<leader>co', 'TypescriptOrganizeImports', { buffer = buffer, desc = 'Organize Imports' })
-          vim.keymap.set('n', '<leader>cR', 'TypescriptRenameFile', { desc = 'Rename File', buffer = buffer })
-        end)
+        -- Usa Autocmd para anexar as keymaps quando o tsserver for iniciado.
+        vim.api.nvim_create_autocmd('LspAttach', {
+          callback = function(args)
+            -- Verifica se o cliente anexado é o tsserver (necessário por causa do seu keymap específico)
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if client and client.name == 'tsserver' then
+              local buffer = args.buf
+
+              -- Configurações específicas do TypeScript
+              vim.keymap.set(
+                'n',
+                '<leader>co',
+                'TypescriptOrganizeImports',
+                { buffer = buffer, desc = 'Organize Imports' }
+              )
+              vim.keymap.set('n', '<leader>cR', 'TypescriptRenameFile', { desc = 'Rename File', buffer = buffer })
+            end
+          end,
+        })
+        -- O lspconfig será configurado após este bloco, usando as opções em 'opts'
       end,
     },
     opts = {

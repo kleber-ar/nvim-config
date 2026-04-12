@@ -4,6 +4,7 @@ return {
     dependencies = {
       'haydenmeade/neotest-jest',
       'marilari88/neotest-vitest',
+      'nvim-neotest/neotest-python', -- 👈 adiciona isso
     },
     keys = {
       {
@@ -16,11 +17,10 @@ return {
       {
         '<leader>tL',
         function()
-          require('neotest').run.run_last({ strategy = 'dap' })
+          require('neotest').run.run_last({ strategy = 'dap', suite = false })
         end,
         desc = 'Debug Last Test',
       },
-
       {
         '<leader>tw',
         function()
@@ -30,6 +30,7 @@ return {
       },
     },
     opts = function(_, opts)
+      -- JS adapters
       table.insert(
         opts.adapters,
         require('neotest-jest')({
@@ -41,7 +42,16 @@ return {
           end,
         })
       )
+
       table.insert(opts.adapters, require('neotest-vitest'))
+
+      -- 🐍 Python adapter
+      table.insert(
+        opts.adapters,
+        require('neotest-python')({
+          python = vim.fn.getcwd() .. '/.venv/bin/python',
+        })
+      )
     end,
   },
 }

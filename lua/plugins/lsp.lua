@@ -49,6 +49,26 @@ return {
           },
         },
 
+        --Java com os imports e formatação
+        jdtls = {
+          cmd = {
+            vim.fn.expand('~/.local/share/nvim/mason/bin/jdtls'),
+          },
+          settings = {
+            java = {
+              format = {
+                enabled = true,
+              },
+              saveActions = {
+                organizeImports = true,
+              },
+              completion = {
+                enabled = true,
+              },
+            },
+          },
+        },
+
         -- Configuração do TypeScript com Typescript.nvim
         tsserver = {
           settings = {

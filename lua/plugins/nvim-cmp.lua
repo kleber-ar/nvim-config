@@ -23,18 +23,22 @@ return {
 
       opts.sources = opts.sources or {}
 
-      -- Adiciona a fonte do lab.nvim
+      -- Fonte do LSP (Java, TS, etc)
+      table.insert(opts.sources, {
+        name = 'nvim_lsp',
+      })
+
+      -- Fonte do lab.nvim
       table.insert(opts.sources, {
         name = 'lab.quick_data',
         keyword_length = 4,
       })
 
-      -- Adiciona emojis
+      -- Emojis
       table.insert(opts.sources, {
         name = 'emoji',
       })
 
-      -- Mantém os mapeamentos padrão e altera apenas o <CR>
       opts.mapping = vim.tbl_extend('force', opts.mapping or {}, {
         ['<CR>'] = cmp.mapping.confirm({
           select = true,

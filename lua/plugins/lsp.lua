@@ -3,27 +3,30 @@ return {
   {
     'neovim/nvim-lspconfig',
     dependencies = {
-      'jose-elias-alvarez/typescript.nvim',
+      'pmizio/typescript-tools.nvim',
+      'nvim-lua/plenary.nvim',
       -- NOVO BLOCO 'config' SUBSTITUINDO O 'init'
       config = function()
-        vim.env.PATH = vim.env.PATH .. ':/home/kleber/.nvm/versions/node/v20.17.0/bin'
+        vim.env.PATH = vim.fn.expand('~/.nvm/versions/node/current/bin') .. ':' .. vim.env.PATH
 
-        -- Usa Autocmd para anexar as keymaps quando o tsserver for iniciado.
+        -- Usa Autocmd para anexar as keymaps quando o typescript-tools for iniciado.
         vim.api.nvim_create_autocmd('LspAttach', {
           callback = function(args)
-            -- Verifica se o cliente anexado é o tsserver (necessário por causa do seu keymap específico)
+            -- Verifica se o cliente anexado é o typescript-tools (necessário por causa dos keymaps específicos)
             local client = vim.lsp.get_client_by_id(args.data.client_id)
-            if client and client.name == 'tsserver' then
+
+            if client and client.name == 'typescript-tools' then
               local buffer = args.buf
 
               -- Configurações específicas do TypeScript
               vim.keymap.set(
                 'n',
                 '<leader>co',
-                'TypescriptOrganizeImports',
+                '<cmd>TSToolsOrganizeImports<CR>',
                 { buffer = buffer, desc = 'Organize Imports' }
               )
-              vim.keymap.set('n', '<leader>cR', 'TypescriptRenameFile', { desc = 'Rename File', buffer = buffer })
+
+              vim.keymap.set('n', '<leader>cR', '<cmd>TSToolsRenameFile<CR>', { buffer = buffer, desc = 'Rename File' })
             end
           end,
         })
@@ -49,7 +52,13 @@ return {
           },
         },
 
-        --Java com os imports e formatação
+        kotlin_language_server = {
+          init_options = {
+            storagePath = vim.fn.stdpath('cache') .. '/kotlin-language-server',
+          },
+        },
+
+        -- Java com os imports e formatação
         jdtls = {
           cmd = {
             vim.fn.expand('~/.local/share/nvim/mason/bin/jdtls'),
@@ -69,20 +78,23 @@ return {
           },
         },
 
-        -- Configuração do TypeScript com Typescript.nvim
-        tsserver = {
+        -- Configuração do TypeScript com typescript-tools.nvim
+        ['typescript-tools'] = {
           settings = {
-            typescript = {
-              format = {
-                enable = true,
-                singleQuote = true,
-              },
+            separate_diagnostic_server = true,
+            publish_diagnostic_on = 'insert_leave',
+
+            expose_as_code_action = 'all',
+
+            tsserver_file_preferences = {
+              includeCompletionsForModuleExports = true,
+              quotePreference = 'single',
             },
-            javascript = {
-              format = {
-                enable = true,
-                singleQuote = true,
-              },
+
+            tsserver_format_options = {
+              allowIncompleteCompletions = false,
+              allowRenameOfImportPath = true,
+              quotePreference = 'single',
             },
           },
         },

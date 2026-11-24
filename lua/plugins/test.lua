@@ -4,7 +4,6 @@ return {
     dependencies = {
       'haydenmeade/neotest-jest',
       'marilari88/neotest-vitest',
-      'nvim-neotest/neotest-python', -- 👈 adiciona isso
     },
     keys = {
       {
@@ -30,7 +29,9 @@ return {
       },
     },
     opts = function(_, opts)
-      -- JS adapters
+      opts.adapters = opts.adapters or {}
+
+      -- JS / TS adapters (Jest e Vitest)
       table.insert(
         opts.adapters,
         require('neotest-jest')({
@@ -44,14 +45,6 @@ return {
       )
 
       table.insert(opts.adapters, require('neotest-vitest'))
-
-      -- 🐍 Python adapter
-      table.insert(
-        opts.adapters,
-        require('neotest-python')({
-          python = vim.fn.getcwd() .. '/.venv/bin/python',
-        })
-      )
     end,
   },
 }
